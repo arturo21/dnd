@@ -231,15 +231,17 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 					archivos.push(file);
 				}
 				if(archivos.length>0){
+					var formData = new FormData();
+					for(var i = 0; i < files.length; i++) {
+						formData.append('file', archivos[i]);
+					}
 					//subir archivos
 					if(ajx!=undefined){
 						let fetchobj=ajx;
 						let veces=archivos.length;
 						let contador=archivos.length;
-						jsonstr={ files: archivos };
 						console.log(config_ppal.action)
-						console.log(jsonstr)
-						fetchobj.post(config_ppal.action, jsonstr)
+						fetchobj.post(config_ppal.action, formData)
 						.then(function (response) {
 							rescomp=response;
 							console.log("********************************RESPONSE DND**************************");						
