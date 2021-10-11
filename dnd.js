@@ -236,11 +236,15 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 						let fetchobj=ajx;
 						let veces=archivos.length;
 						let contador=archivos.length;
-						let jsonstr="{archivos:\"" + archivos + "\"}";
+						jsonstr={ files: archivos };
+						console.log(config_ppal.action)
+						console.log(jsonstr)
 						fetchobj.post(config_ppal.action, jsonstr)
 						.then(function (response) {
-							rescomp=response.data;
+							rescomp=response;
+							console.log("********************************RESPONSE DND**************************");						
 							console.log(rescomp);
+							console.log("**********************************************************************");
 						})
 						.catch(function (error) {
 							console.log("ERROR AJAX " + error);
