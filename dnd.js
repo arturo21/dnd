@@ -234,14 +234,10 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 					//subir archivos
 					if(ajx!=undefined){
 						let fetchobj=ajx;
-						console.log("AJAX HANDLER ");
-						console.log(ajx);
-						console.log(config_ppal.action);
-						console.log(archivos);
 						let veces=archivos.length;
 						let contador=archivos.length;
 						let jsonstr="{archivos:\"" + archivos + "\"}";
-						fetchobj.post(config_ppal.action, archivos)
+						fetchobj.post(config_ppal.action, jsonstr)
 						.then(function (response) {
 							rescomp=response.data;
 							console.log(rescomp);
