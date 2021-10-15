@@ -1,7 +1,7 @@
 # dnd
 API para crear una dropzone y subir archivos mediante drag and drop
 
-##Client
+## Client
 
 ```javascript
 	dnd.config({
@@ -17,7 +17,7 @@ API para crear una dropzone y subir archivos mediante drag and drop
 	<form action="/apicompressor/subirarchivo" class="dropzone" id="my-awesome-dropzone" enctype="multipart/form-data"></form>
 ```
 
-##Server
+## Server
 
 ```javascript
 		if(!req.files) {
