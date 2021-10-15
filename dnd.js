@@ -2,16 +2,28 @@ let ajaxsck;
 let apisc;
 let config_ppal=[{}];
 let archivos=[{}];
+let fileint=[{}];
 let archivoscargados=[{}];
 let extensiones=[{}];
 let queue=[{}];
 let container="";
 let contppal;
+let colaocupada=0;
+let vecesasubir=0;
+let contarchivos=0;
+let archivosubidos=0;
+let callbackimg;
+let callbackprc;
+let archivoactual;
+let archivoactualacargar;
+let formData = new FormData();
+let colaInterval;
+let ajax_=new XMLHttpRequest();
+
 // Check for the various File API support.
 if (window.File && window.FileReader && window.FileList && window.Blob) {
 // Great success! All the File APIs are supported.
 	var ajx=(function(global,factory){
-		let ajax_=getSocket();
 		let bitget=0;
 		let bitpost=0;
 		let bitgetjson=0;
@@ -19,16 +31,47 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 		let bitload=0;
 		let protocol='get';
 		let errormessage="";
+		ajax_.addEventListener("progress", getProgress, false);
+		ajax_.addEventListener("load", ExecCola, false);
+
 		//write code below
 		function getSocket(){
 			// code for modern browsers
-			xmlhttp = new XMLHttpRequest();
-			return xmlhttp;
+			return ajax_;
+		};
+		function getProgress(e){
+			let percent_complete = (e.loaded / e.total)*100;
+			colaocupada=1;
+			return percent_complete;
+		};
+		//subir los archivos del array Archivos
+		function ExecCola(e){
+			let fileint=archivos;
+			let maxarchivos=fileint.length;
+			if(archivosubidos<maxarchivos){
+				colaocupada=1;
+				formData = new FormData();
+				formData.append('file[' + archivosubidos + ']', fileint[archivosubidos]);
+				ajx.post(config_ppal.action, formData)
+				.then(function(response){
+					rescomp=response;
+					archivoactual=rescomp;
+					archivoscargados.push(rescomp);
+					formData = new FormData();
+					fileint=[{}];
+					archivosubidos++;
+				})
+				.catch(function (error) {
+					console.log("ERROR AJAX " + error);
+				});
+			}
+			else{
+				colaocupada=0;
+			}
 		};
 	return{
 		getAjax:function(){
-			let sockajax=getSocket();
-			return sockajax;
+			return ajax_;
 	  	},
 		load:function(url){
 			let options;
@@ -84,6 +127,9 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 				return this;
 			}
 	  	},
+	  	getPercent:function(){
+			return getProgress();
+		},
 	  	post:function(url,data){
 			let options;
 			let respjson;
@@ -133,6 +179,10 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 				}
 			};
 			return this;
+		},
+		ocupado:function(callback){
+			ajaxif=ifbusy();
+			return ajaxif;
 		},
 		catch:function(e){
 			console.log(e);
@@ -207,11 +257,6 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 			e.preventDefault();
 
 		};
-		//subir los archivos del array Archivos
-		function execqeue(e){
-			e.preventDefault();
-
-		};
 		function drop(e){
 			e.preventDefault();
 			if(config_ppal.container!=undefined || config_ppal.container!=null || config_ppal.container!=''){
@@ -229,28 +274,49 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 						contppal_aux.append(img);
 					});
 					archivos.push(file);
+					fileint.push(file);
 				}
-				if(archivos.length>0){
-					var formData = new FormData();
-					for(var i = 0; i < files.length; i++) {
-						formData.append('file', archivos[i]);
+				if(fileint.length>0){
+					for (var i=0; i<fileint.length; i++) {
+						formData.append('file[' + i + ']', fileint[i]);
 					}
 					//subir archivos
 					if(ajx!=undefined){
-						let fetchobj=ajx;
-						let veces=archivos.length;
-						let contador=archivos.length;
-						console.log(config_ppal.action)
-						fetchobj.post(config_ppal.action, formData)
-						.then(function (response) {
-							rescomp=response;
-							console.log("********************************RESPONSE DND**************************");						
-							console.log(rescomp);
-							console.log("**********************************************************************");
-						})
-						.catch(function (error) {
-							console.log("ERROR AJAX " + error);
-						});
+						if(fileint.length>0 && fileint.length<2){
+							let veces=fileint.length;
+							let contador=fileint.length;
+							ajx.post(config_ppal.action, formData)
+							.then(function(response){
+								rescomp=response;
+								archivoactual=rescomp;
+								archivoscargados.push(rescomp);
+								formData = new FormData();
+								fileint=[{}];
+								archivosubidos++;
+							})
+							.catch(function (error) {
+								console.log("ERROR AJAX " + error);
+							});
+						}
+						else{
+							contarchivos=fileint.length;
+							if(contarchivos>1){
+								formData.append('file[' + vecesasubir + ']', fileint[vecesasubir]);
+								ajx.post(config_ppal.action, formData)
+								.then(function(response){
+									rescomp=response;
+									archivoactual=rescomp;
+									archivoscargados.push(rescomp);
+									formData = new FormData();
+									fileint=[{}];
+									archivosubidos++;
+									vecesasubir++;
+								})
+								.catch(function (error) {
+									console.log("ERROR AJAX " + error);
+								});
+							}
+						}
 					}
 					else{
 						return -2;
@@ -268,8 +334,8 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 				let eventoCall;
 				eventoCall=arguments[0];
 				callback=arguments[1];
-				control=getelem(domel);
-				control.addEventListener(eventoCall,callback);
+				contppal=document.querySelector(config_ppal.container);
+				contppal.addEventListener(eventoCall,callback);
 				return this;
 			},
 			config:function(defaults){
@@ -302,8 +368,14 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 			getFiles:function(){
 				return archivoscargados;
 			},
+			getFileActual:function(){
+				return archivoactual;
+			},
+			getFileCargar:function(){
+				return fileint[archivosubidos];
+			},
 			getFilesQueued:function(){
-				return archivos;
+				return fileint;
 			}
 		}
 	}(window));
