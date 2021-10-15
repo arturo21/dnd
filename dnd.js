@@ -365,7 +365,10 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 				archivoscargados=[{}];
 				return this;
 			},
-			getFiles:function(){
+			getAllFiles:function(){
+				return archivos;
+			},
+			getFilesCargados:function(){
 				return archivoscargados;
 			},
 			getFileActual:function(){
