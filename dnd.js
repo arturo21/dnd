@@ -12,6 +12,7 @@ let colaocupada=0;
 let vecesasubir=0;
 let contarchivos=0;
 let archivosubidos=0;
+let archivopsubir=1;
 let callbackimg;
 let callbackprc;
 let archivoactual;
@@ -19,6 +20,8 @@ let archivoactualacargar;
 let formData = new FormData();
 let colaInterval;
 let ajax_=new XMLHttpRequest();
+let ind_min=0;
+let ind_max=0;
 
 // Check for the various File API support.
 if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -32,7 +35,6 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 		let protocol='get';
 		let errormessage="";
 		ajax_.addEventListener("progress", getProgress, false);
-		ajax_.addEventListener("load", ExecCola, false);
 
 		//write code below
 		function getSocket(){
@@ -43,31 +45,6 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 			let percent_complete = (e.loaded / e.total)*100;
 			colaocupada=1;
 			return percent_complete;
-		};
-		//subir los archivos del array Archivos
-		function ExecCola(e){
-			let fileint=archivos;
-			let maxarchivos=fileint.length;
-			if(archivosubidos<maxarchivos){
-				colaocupada=1;
-				formData = new FormData();
-				formData.append('file[' + archivosubidos + ']', fileint[archivosubidos]);
-				ajx.post(config_ppal.action, formData)
-				.then(function(response){
-					rescomp=response;
-					archivoactual=rescomp;
-					archivoscargados.push(rescomp);
-					formData = new FormData();
-					fileint=[{}];
-					archivosubidos++;
-				})
-				.catch(function (error) {
-					console.log("ERROR AJAX " + error);
-				});
-			}
-			else{
-				colaocupada=0;
-			}
 		};
 	return{
 		getAjax:function(){
@@ -257,6 +234,36 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 			e.preventDefault();
 
 		};
+		//subir los archivos del array Archivos
+		function ExecCola(e){
+			let fileint=archivos;
+			let indfinal;
+			let maxarchivos=fileint.length;
+			if(archivosubidos<maxarchivos){
+				colaocupada=1;
+				formData = new FormData();
+				if(fileint[archivosubidos].size!=undefined){
+					formData.append('file[' + archivosubidos + ']', fileint[archivosubidos]);
+					ajx.post(config_ppal.action, formData)
+					.then(function(response){
+						rescomp=response;
+						archivoactual=rescomp;
+						archivoscargados.push(rescomp);
+						formData = new FormData();
+						fileint=[{}];
+						archivosubidos++;
+					})
+					.catch(function (error) {
+						console.log("ERROR AJAX " + error);
+					});
+				}
+			}
+			else{
+				ajax_.removeEventListener("load", ExecCola, false);
+				colaocupada=0;
+				archivosubidos=0;
+			}
+		};
 		function drop(e){
 			e.preventDefault();
 			if(config_ppal.container!=undefined || config_ppal.container!=null || config_ppal.container!=''){
@@ -277,46 +284,40 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 					fileint.push(file);
 				}
 				if(fileint.length>0){
-					for (var i=0; i<fileint.length; i++) {
-						formData.append('file[' + i + ']', fileint[i]);
+					ind_min=1;
+					if(fileint.length>2){
+						if(fileint.length>=2 && archivosubidos==0){
+							archivosubidos=1;
+						}
+						ajax_.addEventListener("loadend", ExecCola, false);
+					}
+					ind_max=fileint.length;
+					for (var i=ind_min; i<ind_max; i++) {
+						if(fileint[i].size!=undefined){
+							formData.append('file[' + i + ']', fileint[i]);
+						}
 					}
 					//subir archivos
 					if(ajx!=undefined){
-						if(fileint.length>0 && fileint.length<2){
-							let veces=fileint.length;
-							let contador=fileint.length;
-							ajx.post(config_ppal.action, formData)
-							.then(function(response){
-								rescomp=response;
-								archivoactual=rescomp;
-								archivoscargados.push(rescomp);
-								formData = new FormData();
-								fileint=[{}];
-								archivosubidos++;
-							})
-							.catch(function (error) {
-								console.log("ERROR AJAX " + error);
-							});
-						}
-						else{
-							contarchivos=fileint.length;
-							if(contarchivos>1){
-								formData.append('file[' + vecesasubir + ']', fileint[vecesasubir]);
-								ajx.post(config_ppal.action, formData)
-								.then(function(response){
-									rescomp=response;
-									archivoactual=rescomp;
-									archivoscargados.push(rescomp);
-									formData = new FormData();
-									fileint=[{}];
-									archivosubidos++;
-									vecesasubir++;
-								})
-								.catch(function (error) {
-									console.log("ERROR AJAX " + error);
-								});
+						let veces=fileint.length;
+						let contador=fileint.length;
+						let contarchivos=fileint.length;
+						ajx.post(config_ppal.action, formData)
+						.then(function(response){
+							rescomp=response;
+							archivoactual=rescomp;
+							archivoscargados.push(rescomp);
+							formData = new FormData();
+							fileint=[{}];
+							archivosubidos++;
+							vecesasubir++;
+							if(fileint.length>=2 && archivosubidos==0){
+								archivosubidos=0;
 							}
-						}
+						})
+						.catch(function (error) {
+							console.log("ERROR AJAX " + error);
+						});
 					}
 					else{
 						return -2;
