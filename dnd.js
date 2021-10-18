@@ -62,7 +62,6 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 			bitupload=0;
 			bitload=1;
 			if(bitload==1){
-				console.log("BITLOAD=1");
 				ajax_.open("GET", url, true);
 				ajax_.send(null);
 				return this;
@@ -80,7 +79,6 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 			bitupload=0;
 			bitload=0;
 			if(bitget==1){
-				console.log("BITGET=1");
 				ajax_.open("GET", url, true);
 				ajax_.send(null);
 				return this;
@@ -98,7 +96,6 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 			bitupload=0;
 			bitload=0;
 			if(bitgetjson==1){
-				console.log("BITJSON=1");
 				ajax_.open("GET", url, true);
 				ajax_.send(null);
 				return this;
