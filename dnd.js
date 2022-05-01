@@ -154,68 +154,10 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 			};
 			return this;
 		},
-		ocupado:function(callback){
-			ajaxif=ifbusy();
-			return ajaxif;
-		},
 		catch:function(e){
 			console.log(e);
 		}
 	  }
-	}(window));
-
-	var gnstore=(function(global,factory){
-		//Submodulo Cookies
-		return{
-			setLocal:function(variable,valorvariable){
-				try{
-					window.localStorage.setItem(variable, valorvariable);
-				}
-				catch(e){
-					console.log(e);
-				}
-			},
-			getLocal:function(variable){
-				if (window.localStorage) {
-				  return window.localStorage.getItem(variable);
-				}
-				else {
-				  throw new Error('Tu navegador no soporta LocalStorage!');
-				}
-			},
-			rmLocal:function(variable){
-				if (window.localStorage) {
-				  window.localStorage.removeItem(variable);
-				}
-				else {
-				  throw new Error('Tu navegador no soporta LocalStorage!');
-				}
-			},
-			setSession:function(variable,valorvariable){
-				if (window.sessionStorage) {
-					window.sessionStorage.setItem(variable, valorvariable);
-				}
-				else {
-					throw new Error('Tu navegador no soporta SessionStorage!');
-				}
-			},
-			getSession:function(variable){
-				if (window.sessionStorage) {
-					return window.sessionStorage.getItem(variable);
-				}
-				else {
-					throw new Error('Tu navegador no soporta SessionStorage!');
-				}
-			},
-			rmSession:function(variable){
-				if (window.sessionStorage) {
-					window.sessionStorage.removeItem(variable);
-				}
-				else {
-					throw new Error('Tu navegador no soporta SessionStorage!');
-				}
-			}
-		}
 	}(window));
 
 	var dnd=(function(global,factory){
@@ -327,15 +269,6 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 			}
 		};
 		return {
-			on:function(){
-				let control;
-				let eventoCall;
-				eventoCall=arguments[0];
-				callback=arguments[1];
-				contppal=document.querySelector(config_ppal.container);
-				contppal.addEventListener(eventoCall,callback);
-				return this;
-			},
 			config:function(defaults){
 				config_ppal=defaults;
 
