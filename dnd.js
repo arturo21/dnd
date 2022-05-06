@@ -1,10 +1,8 @@
-let ajaxsck;
-let apisc;
+let ajax_=new XMLHttpRequest();
 let config_ppal=[{}];
 let archivos=[{}];
 let fileint=[{}];
 let archivoscargados=[{}];
-let extensiones=[{}];
 let queue=[{}];
 let container="";
 let contppal;
@@ -13,19 +11,15 @@ let vecesasubir=0;
 let contarchivos=0;
 let archivosubidos=0;
 let archivopsubir=1;
-let callbackimg;
-let callbackprc;
 let archivoactual;
 let archivoactualacargar;
 let formData = new FormData();
-let colaInterval;
-let ajax_=new XMLHttpRequest();
 let ind_min=0;
 let ind_max=0;
 
 // Check for the various File API support.
 if (window.File && window.FileReader && window.FileList && window.Blob) {
-// Great success! All the File APIs are supported.
+	// Great success! All the File APIs are supported.
 	var ajx=(function(global,factory){
 		let bitget=0;
 		let bitpost=0;
