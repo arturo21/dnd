@@ -17,7 +17,8 @@ API para crear una dropzone y subir archivos mediante drag and drop
 	<form action="/apicompressor/subirarchivo" class="dropzone" id="my-awesome-dropzone" enctype="multipart/form-data"></form>
 ```
 
-## Si quieres habilitar el escoger archivos mediante el botón del control File, escribe el argumento filefield con el id o query del control file tal que así:
+## Tip
+Si quieres habilitar el escoger archivos mediante el botón del control File, escribe el argumento filefield con el id o query del control file tal que así:
 
 ```javascript
 	dnd.config({
