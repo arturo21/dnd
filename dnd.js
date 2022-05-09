@@ -183,7 +183,7 @@
 						ajx.post(config_ppal.action, formData)
 						.then(function(response){
 							rescomp=response;
-							archivoactual=rescomp;
+							archivoactual=fileint[archivosubidos];
 							archivoscargados.push(rescomp);
 							formData = new FormData();
 							fileint=[{}];
@@ -335,7 +335,7 @@
 						return -1;
 					}
 					return archivos;
-				}
+				};
 			};
 			return {
 				config:function(defaults){
@@ -385,6 +385,11 @@
 				},
 				getFilesQueued:function(){
 					return fileint;
+				},
+				gettingFilePerFile(callback){
+					if(typeof callback==="function"){
+						ajax_.addEventListener("loadend", callback, false);
+					}
 				}
 			}
 		}(window));

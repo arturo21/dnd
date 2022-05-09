@@ -1,0 +1,28 @@
+{
+  "name": "gdragndrop",
+  "version": "0.0.2",
+  "description": "Lib to upload files through drag and drop method",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arturo21/dnd.git"
+  },
+  "keywords": [
+    "dnd",
+    "drag",
+    "drop",
+    "method",
+    "dragndrop",
+    "arturo",
+    "vasquez"
+  ],
+  "author": "Arturo Vásquez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arturo21/dnd/issues"
+  },
+  "homepage": "https://github.com/arturo21/dnd#readme"
+}
