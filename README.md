@@ -1,12 +1,12 @@
 # dnd
 API para crear una dropzone y subir archivos mediante drag and drop
 
-## Importar librería desde NPM
+## Importar general.js desde NPM
 ```javascript
 	npm i gnrl.js
 ```
 
-## Importar librería desde CDN
+## Importar general.js desde CDN
 ```html
 	<script src="https://cdn.underdevelopment.work/generaljs/general.min.js">
 ```
