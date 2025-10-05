@@ -57,6 +57,17 @@ Integración directa con [`general.js`](https://cdn.underdevelopment.work/genera
 | `drop`        | `function` | Callback que se ejecuta cuando se suelta un archivo                         | `function(e) { console.log(e); }`         |
 | `filefield`   | `string`   | Selector CSS del input file para habilitar selección manual de archivos     | `"#formulario input[type='file']"`        |
 ---
+## 📦 Changelog
+
+| Versión | Fecha        | Cambios realizados                                                                 |
+|---------|--------------|------------------------------------------------------------------------------------|
+| `v1.1.0`| 2025-10-05    | Se agrega soporte para subida secuencial (`ExecCola`) y mejora en manejo de múltiples archivos |
+| `v1.0.9`| 2025-09-28    | Se integra `filefield` para selección manual de archivos desde input file         |
+| `v1.0.8`| 2025-09-20    | Se refactoriza `drop()` para renderizar previews con `FileReader`                |
+| `v1.0.7`| 2025-09-12    | Se agrega `getFilesQueued()` y `getFileCargar()` para inspección de la cola      |
+| `v1.0.6`| 2025-09-05    | Se implementa `emptyFiles()` y `getFilesCargados()` para control de estado       |
+| `v1.0.5`| 2025-08-30    | Se publica versión inicial con `config()`, `drop()`, y renderizado básico        |
+---
 
 ## 📦 Instalación
 
