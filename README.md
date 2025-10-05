@@ -48,6 +48,15 @@ Integración directa con [`general.js`](https://cdn.underdevelopment.work/genera
 | `ExecCola(e)`          | Ejecuta la subida secuencial de archivos en cola usando `ajx.post()`        |
 
 ---
+## ⚙️ Parámetros de configuración en dnd.config()
+
+| Parámetro     | Tipo       | Descripción                                                                 | Ejemplo de valor                          |
+|---------------|------------|------------------------------------------------------------------------------|-------------------------------------------|
+| `container`   | `string`   | Selector CSS del contenedor donde se habilita la zona de drop               | `"#dndzone"`                               |
+| `action`      | `string`   | URL del endpoint al que se enviarán los archivos                            | `"/apicompressor/subirarchivo"`           |
+| `drop`        | `function` | Callback que se ejecuta cuando se suelta un archivo                         | `function(e) { console.log(e); }`         |
+| `filefield`   | `string`   | Selector CSS del input file para habilitar selección manual de archivos     | `"#formulario input[type='file']"`        |
+---
 
 ## 📦 Instalación
 
